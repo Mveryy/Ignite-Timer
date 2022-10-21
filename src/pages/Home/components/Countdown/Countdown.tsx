@@ -6,10 +6,10 @@ import { CountdownContainer, SeparatorCountdown, SpanCountdown } from './styles'
 export default function Countdown() {
   const {
     activeCycle,
-    setCycles,
     activeCycleId,
     amountSecondsPassed,
     setAmountSecondsPassed,
+    markCurrentCycleAsFinished,
   } = useContext(Context)
 
   const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
@@ -29,19 +29,11 @@ export default function Countdown() {
       interval = setInterval(() => {
         const secondsDifference = differenceInSeconds(
           new Date(),
-          activeCycle.startDate,
+          new Date(activeCycle.startDate),
         )
 
         if (secondsDifference >= totalSeconds) {
-          setCycles((state) =>
-            state.map((cycle) => {
-              if (cycle.id === activeCycleId) {
-                return { ...cycle, finishedDate: new Date() }
-              } else {
-                return cycle
-              }
-            }),
-          )
+          markCurrentCycleAsFinished()
           setAmountSecondsPassed(totalSeconds)
           clearInterval(interval)
         } else {
@@ -61,7 +53,7 @@ export default function Countdown() {
     } else {
       document.title = 'Ignite Timer'
     }
-  }, [minutes, seconds])
+  }, [minutes, seconds, activeCycle])
 
   return (
     <CountdownContainer>

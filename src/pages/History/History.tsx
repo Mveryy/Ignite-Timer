@@ -38,7 +38,7 @@ export default function History() {
                   <TableData>{cycle.task}</TableData>
                   <TableData>{cycle.minutesAmount} minutos</TableData>
                   <TableData>
-                    {formatDistanceToNow(cycle.startDate, {
+                    {formatDistanceToNow(new Date(cycle.startDate), {
                       addSuffix: true,
                       locale: ptBR,
                     })}
